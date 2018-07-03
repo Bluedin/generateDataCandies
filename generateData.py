@@ -1,11 +1,16 @@
 from random import *
-import client
+from client import Client
+from order import Order
 import time
 
-client = client.Client('client')
+client = Client()
 
 
 client.randomize()
-client.getData()
+#for instance in client.getData():
+#	print instance
+print(client.getData())
 
-
+order = Order()
+order.randomize()
+print(order.getData())
