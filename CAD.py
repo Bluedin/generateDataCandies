@@ -1,11 +1,15 @@
 import cx_Oracle as cx
+import json
 
 
 class CAD():
 	"""docstring for CAD"""
 	def __init__(self):
-		#self.localFile = './localFile.json'
-		self.connection = cx.connect('pl/123')
+		self.localFile = './localFile.json'
+		with open(self.localFile, 'r') as f:
+			datastore = json.load(f)
+		login = datastore['login'] + '/' + datastore['mdp']
+		self.connection = cx.connect(login)
 
 
 
