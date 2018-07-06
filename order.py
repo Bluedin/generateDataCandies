@@ -1,3 +1,4 @@
+
 from random import *
 from randomized import Randomized as ran
 from client import Client
@@ -5,7 +6,17 @@ from candyOrder import CandyOrder
 
 class Order(ran):
 
+	"""The order which contains list of candy ordered, the container and the client
+	Randomly create order ('random') or create order following a trend ('critic')
+	"""
+	
 	def __init__(ran):
+		"""initialize possible data to be chosen from
+		as well as probality
+		
+		Args:
+		    ran (randomized): self
+		"""
 		ran.container = ['Echantillon', 'Sachet', 'Boite']
 		ran.containerNumber = {'Echantillon': 3, 'Sachet': 10, 'Boite': 25}
 		ran.containerRandRange = {'Echantillon': 1, 'Sachet': 1, 'Boite': 1}
@@ -28,10 +39,25 @@ class Order(ran):
 		ran.instance = {'container': 'Echantillon', 'contained': [], 'client': 0, 'date': '0', 'personalized': 0}
 
 	def getData(ran):
+		"""Summary
+		
+		Args:
+		    ran (randomized): self
+		
+		Returns:
+		    TYPE: Description
+		"""
 		return ran.instance
 
 	def randomize(ran):
-
+		"""randomly change value of order
+		random: no particular trend followed
+		critic: a random trend is created when changing mode to critic \
+		 and followed until we change mode
+		
+		Args:
+		    ran (randomized): self
+		"""
 		randRange = 0
 		for do in ran.containerRandRange:
 			randRange += ran.containerRandRange[do]
@@ -86,6 +112,11 @@ class Order(ran):
 				ran.instance['contained'].append(ran.contained[i].getData())
 
 	def compileDate(ran):
+		"""set date of order base on unit value of time in the order
+		
+		Args:
+		    ran (randomized): self
+		"""
 		if(ran.hour <= 10):
 			hour = '0' + str(ran.hour)
 		else:
@@ -101,6 +132,13 @@ class Order(ran):
 		ran.date = str(ran.day) + '-' + str(ran.month) + '-' + str(ran.year) + ' ' + hour + ':' + minute + ':' + second
 
 	def randomIncreaseDate(ran):
+		"""randomly increase the date and time of order based on precedent
+		random: between 0 and 2 hours
+		critic: between 0 and 20 seconds
+		
+		Args:
+		    ran (randomized): self
+		"""
 		secondIncrease = randint(1, ran.maxIncreaseSecond)
 		hourIncrease = secondIncrease//3600
 		secondIncrease = secondIncrease%3600
@@ -117,6 +155,11 @@ class Order(ran):
 		ran.day %= 365
 
 	def randomMode(ran):
+		"""set mode to 'random'
+		
+		Args:
+		    ran (randomized): self
+		"""
 		ran.containedMode = 'random'
 		for do in ran.containerRandRange:
 			ran.containerRandRange[do] = 1
@@ -125,6 +168,11 @@ class Order(ran):
 		ran.maxIncreaseSecond = 7200
 
 	def criticMode(ran):
+		"""set mode to 'critic'
+		
+		Args:
+		    ran (randomized): self
+		"""
 		ran.containedMode = 'critic'
 		ran.containerRandRange[sample(ran.container, 1)[0]] = 10
 		toFocus = ran.contained[0].criticMode()
@@ -137,7 +185,13 @@ class Order(ran):
 
 
 	def changeMode(ran, mode):
-		switcher = {'random': ran.randomMode, 'critic': ran.criticMode}
+		"""call either criticMode() or randomMode()
+		
+		Args:
+		    ran (randomized): self 
+		    mode (string): etheir 'random' or 'random'
+		"""
+		switcher = {'random': ran.randomMode, 'random': ran.criticMode}
 		func = switcher.get(mode, lambda: 'invalid mode')
 		func()
 

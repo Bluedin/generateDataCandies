@@ -1,10 +1,21 @@
+"""import cx_oracle to connect to oracle
+import json to read json file 
+"""
 import cx_Oracle as cx
 import json
 
 
 class CAD():
-	"""docstring for CAD"""
+	"""docstring for CAD
+	
+	Attributes:
+	    connection (TYPE): object used for connecting to oracle
+	    localFile (str): location of login file
+	"""
 	def __init__(self):
+		"""initiate localFile and connection
+		get login and password from json file
+		"""
 		self.localFile = './localFile.json'
 		with open(self.localFile, 'r') as f:
 			datastore = json.load(f)
@@ -14,6 +25,13 @@ class CAD():
 
 
 	def sendData(data, typeData):
+		"""send data to oracle
+		different request based on typeData sent
+		
+		Args:
+		    data (list): data to send to oracle
+		    typeData (string): either 'order', 'stockCandy', 'stockMaterial'
+		"""
 		#TODO Formattage de données
 
  
@@ -122,6 +140,8 @@ class CAD():
 		self.connection.commit()
 
 	def __del__(self):
+		"""delete connection to database when CAD is destroyed
+		"""
 		self.connection.close()
 
 		
