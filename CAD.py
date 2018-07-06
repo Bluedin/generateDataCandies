@@ -4,7 +4,7 @@ import cx_Oracle as cx
 class CAD():
 	"""docstring for CAD"""
 	def __init__(self):
-		self.localFile = './localFile.json'
+		#self.localFile = './localFile.json'
 		self.connection = cx.connect('pl/123')
 
 
@@ -14,7 +14,7 @@ class CAD():
 
  
 		cursor = con.cursor()
- 		if(typeData=='order'):
+		if(typeData=='order'):
 			for item in data:
 				client = item['client']
 				cursor.execute('select ID from Pays where Nom=":Pays"', Pays=client['country'])
@@ -25,11 +25,11 @@ class CAD():
 						'  values(:Adresse, :Mail, :Nom, :Prenom, :Ville, :Pays)',\
 						Adresse=client['adress'], Mail=client['mail'], Nom=client['surname'], Prenom=client['name'], Ville=client['city'], Pays=pays)
 				except cx.DatabaseError as exc:
-				    error, = exc.args
-				    print("Code:     ", error.code, file=sys.stderr)
-				    print("Message   ", error.message.strip(), file=sys.stderr)
-				    print("Context   ", error.context, file=sys.stderr)
-				    cx.DatabaseError
+					error, = exc.args
+					print("Code:     ", error.code, file=sys.stderr)
+					print("Message   ", error.message.strip(), file=sys.stderr)
+					print("Context   ", error.context, file=sys.stderr)
+					cx.DatabaseError
 
 				
 				cursor.execute('select ID from Client where Adresse=:Adresse AND Mail=:Mail AND Nom=:Nom AND Prenom=:Prenom AND Ville=:Ville AND Pays=:Pays', \
@@ -45,11 +45,11 @@ class CAD():
 						'  values(TO_DATE(:Envoi, "dd/mm/yyyy hh24:mi:ss"), TO_DATE(:Livraison, "dd/mm/yyyy hh24:mi:ss"), :ID_Client)',\
 						Envoi=item['date'], Livraison=item['date'], ID_Client=idClient)
 				except cx.DatabaseError as exc:
-				    error, = exc.args
-				    print("Code:     ", error.code, file=sys.stderr)
-				    print("Message   ", error.message.strip(), file=sys.stderr)
-				    print("Context   ", error.context, file=sys.stderr)
-				    cx.DatabaseError
+					error, = exc.args
+					print("Code:     ", error.code, file=sys.stderr)
+					print("Message   ", error.message.strip(), file=sys.stderr)
+					print("Context   ", error.context, file=sys.stderr)
+					cx.DatabaseError
 
 				cursor.execute('select ID from Commande where Envoi=TO_DATE(:Envoi, "dd/mm/yyyy hh24:mi:ss") AND Livraison=TO_DATE(:Livraison, "dd/mm/yyyy hh24:mi:ss") AND ID_Client=:ID_client',\
 					Envoi=item['date'], Livraison=item['date'], ID_Client=idClient)
@@ -72,11 +72,11 @@ class CAD():
 							'  values(:ID_Contenant, :ID_Commande, :ID_Packetage, :ID_Bonbon)',\
 							ID_Contenant=1, ID_Commande=idCommande, ID_Packetage=idPacketage, ID_Bonbon=id)
 					except cx.DatabaseError as exc:
-					    error, = exc.args
-					    print("Code:     ", error.code, file=sys.stderr)
-					    print("Message   ", error.message.strip(), file=sys.stderr)
-					    print("Context   ", error.context, file=sys.stderr)
-					    cx.DatabaseError
+						error, = exc.args
+						print("Code:     ", error.code, file=sys.stderr)
+						print("Message   ", error.message.strip(), file=sys.stderr)
+						print("Context   ", error.context, file=sys.stderr)
+						cx.DatabaseError
 
 
 
